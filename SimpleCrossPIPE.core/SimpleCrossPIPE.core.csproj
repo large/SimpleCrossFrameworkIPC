@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+		<SignAssembly>false</SignAssembly>
+		<Version>1.0.0</Version>
+		<Authors>Lars Werner</Authors>
+		<Description>Simple IPC across .core and .net.</Description>
+		<Copyright>Copyright © 2020</Copyright>
+		<PackageLicense>https://github.com/large/SimpleCrossPIPE/blob/master/LICENSE</PackageLicense>
+		<PackageProjectUrl>https://github.com/large/SimpleCrossPIPE</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/large/SimpleCrossPIPE.git</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageTags>Simple IPC</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>Ported to .net core. Supports .net 4.7.2+ and .net standard 2.1</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<AssemblyName>SimpleCrossPIPE</AssemblyName>
+		<RootNamespace>SimpleCrossPIPE</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SimpleCrossPIPE\Client\Client.cs" Link="Client\Client.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Client\ClientPipe.cs" Link="Client\ClientPipe.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Client\ProxyHelper.cs" Link="Client\ProxyHelper.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Common\BasicPipe.cs" Link="Common\BasicPipe.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Common\MemoryStreamExtension.cs" Link="Common\MemoryStreamExtension.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Common\Message.cs" Link="Common\Message.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Common\PipeEventArgs.cs" Link="Common\PipeEventArgs.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Common\Request.cs" Link="Common\Request.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Common\Response.cs" Link="Common\Response.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Server\Server.cs" Link="Server\Server.cs" />
+		<Compile Include="..\SimpleCrossPIPE\Server\ServerPipe.cs" Link="Server\ServerPipe.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+		<PackageReference Include="System.IO.Pipes" Version="4.3.0" />
+		<PackageReference Include="System.IO.Pipes.AccessControl" Version="4.5.1" />
+		<PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+		<PackageReference Include="Newtonsoft.Json" version="12.0.3" />
+	</ItemGroup>
+
+</Project>
