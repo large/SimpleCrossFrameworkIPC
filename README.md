@@ -68,3 +68,7 @@ After connection are used to receive data from the server
         Console.WriteLine(ex.ToString());
     }
 ```
+Exceptionhandling is needed for the pipeconnection throws a "Connection timout" and other errors.
+
+## Complexity
+I do now belive it will handle complex classes, so i recommend to KISS!
