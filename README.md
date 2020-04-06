@@ -6,9 +6,9 @@ The "fix" for the conversion is a hack and might not work for later releases.
 
 As for 06.04.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
 
-#Usage
+## Usage
 Server and Client need to share a common interface.
-```
+```c#
     public interface ISimple
     {
         int Number { get; }
@@ -17,7 +17,7 @@ Server and Client need to share a common interface.
 ```
 
 Server contains the data in the interface, so it needs to be filled
-```
+```c#
     public class Simple : ISimple
     {
         public int Number { get => 111; }
