@@ -18,18 +18,14 @@ namespace Client
             try
             {
                 client.Connect(Channel.Name, Channel.TimeoutMS);
-
                 var proxy = client.GetProxy();
-
-                Console.WriteLine("Text: " + proxy.Text);
+                Console.WriteLine("Text: " + proxy.Text, proxy.Number.ToString());
             }
             catch(Exception ex)
             {
                 Console.WriteLine("Error: " + ex.ToString());
             }
-
             Console.ReadLine();
-
         }
     }
 }

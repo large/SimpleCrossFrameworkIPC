@@ -10,9 +10,9 @@ namespace Server
 {
     public class MySimpleService : IMySimpleService
     {
-        public int Number { get => 111; set => Number = value; }
-        public string Text { get => "Some string"; set => Text = value; }
-
+        public int Number { get => 111; }
+        public string Text { get => "Some string"; }
+            
         public int Function()
         {
             return Number * 12;

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// ProxyHelper class is a direct copy from KrakenIPC: https://github.com/darksody/KrakenIPC
+    /// </summary>
     internal static class ProxyHelper
     {
         internal static T GetInstance<T>(Func<string, List<object>, List<object>, Type, object> callbackHook)
@@ -121,7 +124,6 @@ namespace SimpleCrossPIPE
                 }
             }
         }
-
 
         internal static object GetDefault(Type t)
         {

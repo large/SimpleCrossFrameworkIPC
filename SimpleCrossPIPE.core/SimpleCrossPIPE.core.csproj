@@ -11,9 +11,9 @@
 		<PackageProjectUrl>https://github.com/large/SimpleCrossPIPE</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/large/SimpleCrossPIPE.git</RepositoryUrl>
 		<RepositoryType>Git</RepositoryType>
-		<PackageTags>Simple IPC</PackageTags>
+		<PackageTags>IPC, Core, Net, C#,</PackageTags>
 		<NeutralLanguage>en</NeutralLanguage>
-		<PackageReleaseNotes>Ported to .net core. Supports .net 4.7.2+ and .net standard 2.1</PackageReleaseNotes>
+		<PackageReleaseNotes>Ported to .net core. Supports .net 4.7.2+ and .net standard 2.0</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
@@ -24,6 +24,7 @@
 		<FileVersion>1.0.0.0</FileVersion>
 		<AssemblyName>SimpleCrossPIPE</AssemblyName>
 		<RootNamespace>SimpleCrossPIPE</RootNamespace>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -8,8 +8,8 @@ namespace ServerClientContract
 {
     public interface IMySimpleService
     {
-        int Number { get; set; }
-        string Text { get; set; }
+        int Number { get;  }
+        string Text { get; }
 
         int Function();
     }

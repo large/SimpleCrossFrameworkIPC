@@ -25,7 +25,8 @@
 // See Eric Frazer's Q and self answer
 
 //Modified by Lars Werner 06.04.2020
-//Added StartMessageReaderAsync() to handle messages
+//Added StartMessageReaderAsync() to handle messages-mode
+//Based on https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
 
 using System;
 using System.IO;
@@ -38,9 +39,11 @@ namespace SimpleCrossPIPE
 {
     public abstract class BasicPipe
     {
+        //Events for the pipe
         public event EventHandler<PipeEventArgs> DataReceived;
         public event EventHandler<EventArgs> Disconnect;
 
+        //Pipestream are set by it derivate
         protected PipeStream pipeStream;
         protected Action<BasicPipe> asyncReaderStart;
 
@@ -48,19 +51,25 @@ namespace SimpleCrossPIPE
         {
         }
 
-        public void Flush()
-        {
-            if (pipeStream.IsConnected)
-                pipeStream.Flush();
-        }
-
+        /// <summary>
+        /// Closing a stream
+        /// </summary>
         public void Close()
         {
-            if(pipeStream.IsConnected)
+            if (pipeStream.IsConnected)
                 pipeStream.WaitForPipeDrain();
             pipeStream.Close();
             pipeStream.Dispose();
             pipeStream = null;
+        }
+
+        /// <summary>
+        /// Flushed streams need to be connected, if not ignore
+        /// </summary>
+        public void Flush()
+        {
+            if (pipeStream.IsConnected)
+                pipeStream.Flush();
         }
 
         /// <summary>
@@ -99,9 +108,8 @@ namespace SimpleCrossPIPE
             });
         }
 
-
         /// <summary>
-        /// 
+        /// Write string as bytes
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -111,7 +119,7 @@ namespace SimpleCrossPIPE
         }
 
         /// <summary>
-        /// 
+        /// Write bytes with an option to ignore the "length" that is standard in the Full Duplex class
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="InsertLengthFirst"></param>
@@ -129,7 +137,7 @@ namespace SimpleCrossPIPE
         }
 
         /// <summary>
-        /// 
+        /// Bytereader returns every chunk of data it received during transfer
         /// </summary>
         /// <param name="packetReceived"></param>
         protected void StartByteReaderAsync(Action<byte[]> packetReceived)

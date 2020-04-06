@@ -28,6 +28,9 @@ using System.IO;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// PipeEventArgs are orginal as the Full Duplex code https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// </summary>
     public class PipeEventArgs
     {
         public byte[] Data { get; protected set; }

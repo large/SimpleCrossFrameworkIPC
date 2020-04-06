@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// Request class is sent to the server and contains everything it needs to reconstruct info as a object
+    /// Changed the classname from https://github.com/darksody/KrakenIPC
+    /// </summary>
     internal class Request
     {
         public string MethodName { get; set; }

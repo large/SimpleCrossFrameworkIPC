@@ -24,11 +24,16 @@
 // From: http://stackoverflow.com/questions/34478513/c-sharp-full-duplex-asynchronous-named-pipes-net
 // See Eric Frazer's Q and self answer
 
+
+
 using System;
 using System.IO.Pipes;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// Serverpipe is based on the Full Duplex Pipe class https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// </summary>
     public class ServerPipe : BasicPipe
     {
         public event EventHandler<EventArgs> Connected;

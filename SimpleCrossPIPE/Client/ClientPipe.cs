@@ -29,6 +29,9 @@ using System.IO.Pipes;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// ClientPipe is based on the Full Duplex Pipeclass https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// </summary>
     public class ClientPipe : BasicPipe
     {
         protected NamedPipeClientStream clientPipeStream;

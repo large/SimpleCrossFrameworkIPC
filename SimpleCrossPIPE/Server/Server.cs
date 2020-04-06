@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// Server class is based on the KrakenIPC class https://github.com/darksody/KrakenIPC
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="U"></typeparam>
     public partial class Server<T, U> where T : class, new()
     {
         private List<ServerPipe> serverPipes;
@@ -67,6 +72,9 @@ namespace SimpleCrossPIPE
             return serverPipe;
         }
 
+        /// <summary>
+        /// Stop exlcude the first element since that is the "base server" and needs to be close otherwise
+        /// </summary>
         public void Stop()
         {
             //First server is "async start mode" and shall not be closed as all the other clients
@@ -77,11 +85,17 @@ namespace SimpleCrossPIPE
             }
         }
 
+        /// <summary>
+        /// Messages received by the client is a request for data.
+        /// It converts the request and compare it to the Interface and return the result
+        /// </summary>
+        /// <param name="serverPipe"></param>
+        /// <param name="bytes"></param>
         private void OnMessageReceived(ServerPipe serverPipe, byte[] bytes)
         {
             var json = Encoding.ASCII.GetString(bytes);
 
-            //If server is not .Core, convert to mscorlib
+            //If server is not .Core, convert to mscorlib, a rough hack
             if (!isNetCore)
                 json = json.Replace("System.Private.CoreLib", "mscorlib");
 

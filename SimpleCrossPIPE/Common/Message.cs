@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// Message is the class that serialize and deserialize based on json data.
+    /// It has a quick hack for the .core and .net simple types
+    /// /// </summary>
     public class Message
     {
         public string Payload { get; set; }
@@ -16,6 +20,7 @@ namespace SimpleCrossPIPE
 
         public T GetPayload<T>()
         {
+            //A rough hack for handling .core and .net difference baseclasses
             if (!isNetCore)
                 Payload = Payload.Replace("System.Private.CoreLib", "mscorlib");
 

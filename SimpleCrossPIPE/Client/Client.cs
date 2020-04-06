@@ -7,6 +7,13 @@ using Newtonsoft.Json;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// Client class is a mix between Full Duplex PipeServer and KrakenIPC
+    /// See links:
+    /// https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// https://github.com/darksody/KrakenIPC
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Client<T> where T : class
     {
         //Client used only one pipe
@@ -25,17 +32,30 @@ namespace SimpleCrossPIPE
         //Event if client was disconnected
         public event EventHandler<EventArgs> ClientDisconnected;
 
+        /// <summary>
+        /// Proxy uses a callbackfunction that builds with the Response-class received from the server
+        /// </summary>
         public Client()
         {
             clientPipe = null;
             proxy = ProxyHelper.GetInstance<T>(OnMethodCallback);
         }
 
+        /// <summary>
+        /// Connects with unlimited timeout value
+        /// </summary>
+        /// <param name="Pipename"></param>
         public void Connect(string Pipename)
         {
             Connect(Pipename, 0);
         }
 
+        /// <summary>
+        /// Connects with a spesified timeout value
+        /// 0 = infinity
+        /// </summary>
+        /// <param name="Pipename"></param>
+        /// <param name="Timeout"></param>
         public void Connect(string Pipename, int Timeout)
         {
             clientPipe = new ClientPipe(".", Pipename, p => p.StartMessageReaderAsync());
@@ -70,6 +90,16 @@ namespace SimpleCrossPIPE
             return proxy;
         }
 
+        /// <summary>
+        /// A callbackfunction from the ProxyHelper class
+        /// Requests in the proxy will ask the server for the info and fill the class with that info
+        /// (No complex types through)
+        /// </summary>
+        /// <param name="methodName"></param>
+        /// <param name="parameterValues"></param>
+        /// <param name="parameterTypes"></param>
+        /// <param name="returnType"></param>
+        /// <returns></returns>
         private object OnMethodCallback(string methodName, List<object> parameterValues, List<object> parameterTypes, Type returnType)
         {
             //call server here, get response if needed
@@ -81,16 +111,19 @@ namespace SimpleCrossPIPE
                 ReturnType = returnType
             };
 
+            //Create a request based on data asked for
             var requestMessage = new Message<Request>(request);
             var json = JsonConvert.SerializeObject(requestMessage);
 
+            //This a dirty "hack" to distinc .net and .core
             if (!isNetCore)
                 json = json.Replace("System.Private.CoreLib", "mscorlib");
 
+            //Send the requests to the server
             byte[] requestBytes = Encoding.ASCII.GetBytes(json);
             clientPipe.WriteBytes(requestBytes, false);
 
-            //Wait for data to be received, then build the rest
+            //Wait for data to be received, then build the data (2 seconds max)
             responseEvent.Wait(TimeSpan.FromMilliseconds(2000));
             if (responseEvent.IsSet)
             {
@@ -120,13 +153,18 @@ namespace SimpleCrossPIPE
                 }
 
             }
-            else //If event is not set, then it is a failure...
+            else //If event is not set, then return nada
                 return null;
         }
 
+        /// <summary>
+        /// Since the Pipes used is full duplex, the received messages are through other threads
+        /// The OnMethodCallback needs this info, it waits for the responseEvent to be set
+        /// </summary>
+        /// <param name="clientPipe"></param>
+        /// <param name="bytes"></param>
         private void OnMessageReceived(ClientPipe clientPipe, byte[] bytes)
         {
-            //Store the message received and trigger event to continue OnMethodCallback()....
             responseJson = Encoding.ASCII.GetString(bytes);
             responseEvent.Set();
         }

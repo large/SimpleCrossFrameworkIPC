@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace SimpleCrossPIPE
 {
+    /// <summary>
+    /// Response is what the server sends to the client.
+    /// Client can reconstruct data and result with this info
+    /// Class is renamed but kept orginals from https://github.com/darksody/KrakenIPC
+    /// </summary>
     class Response
     {
         public string MethodName { get; set; }
