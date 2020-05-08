@@ -24,41 +24,36 @@
 // From: http://stackoverflow.com/questions/34478513/c-sharp-full-duplex-asynchronous-named-pipes-net
 // See Eric Frazer's Q and self answer
 
-
-
 using System;
 using System.IO.Pipes;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
-    /// Serverpipe is based on the Full Duplex Pipe class https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// ClientPipe is based on the Full Duplex Pipeclass https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
     /// </summary>
-    public class ServerPipe : BasicPipe
+    public class ClientPipe : BasicPipe
     {
-        public event EventHandler<EventArgs> Connected;
+        protected NamedPipeClientStream clientPipeStream;
 
-        protected NamedPipeServerStream serverPipeStream;
-
-        public ServerPipe(string pipeName, Action<BasicPipe> asyncReaderStart)
+        public ClientPipe(string serverName, string pipeName, Action<BasicPipe> asyncReaderStart)
         {
             this.asyncReaderStart = asyncReaderStart;
-
-            serverPipeStream = new NamedPipeServerStream(
-                pipeName,
-                PipeDirection.InOut,
-                NamedPipeServerStream.MaxAllowedServerInstances,
-                PipeTransmissionMode.Message,
-                PipeOptions.Asynchronous);
-
-            pipeStream = serverPipeStream;
-            serverPipeStream.BeginWaitForConnection(new AsyncCallback(PipeConnected), null);
+            clientPipeStream = new NamedPipeClientStream(serverName, pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+            pipeStream = clientPipeStream;
         }
 
-        protected void PipeConnected(IAsyncResult ar)
+        public void Connect()
         {
-            serverPipeStream.EndWaitForConnection(ar);
-            Connected?.Invoke(this, new EventArgs());
+            Connect(0);
+        }
+
+        public void Connect(int Timeout)
+        {
+            if (Timeout == 0)
+                clientPipeStream.Connect();
+            else
+                clientPipeStream.Connect(Timeout);
             asyncReaderStart(this);
         }
     }

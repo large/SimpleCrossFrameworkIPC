@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
     /// Message is the class that serialize and deserialize based on json data.

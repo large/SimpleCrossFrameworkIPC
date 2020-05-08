@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
     /// Client class is a mix between Full Duplex PipeServer and KrakenIPC

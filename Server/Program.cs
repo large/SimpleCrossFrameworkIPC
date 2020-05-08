@@ -1,5 +1,5 @@
 ﻿using ServerClientContract;
-using SimpleCrossPIPE;
+using SimpleCrossFrameworkIPC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            var handler = new Server<MySimpleService, IMySimpleService>();
+            var handler = new SimpleCrossFrameworkIPC.Server<MySimpleService, IMySimpleService>();
 
             Console.WriteLine("Server starting channel: " + Channel.Name);
             Console.WriteLine("Press enter to quit");

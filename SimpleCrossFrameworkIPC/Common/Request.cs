@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
     /// Request class is sent to the server and contains everything it needs to reconstruct info as a object

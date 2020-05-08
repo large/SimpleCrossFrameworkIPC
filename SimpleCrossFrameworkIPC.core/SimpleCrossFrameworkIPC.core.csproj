@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+		<SignAssembly>false</SignAssembly>
+		<Version>1.1.3.0</Version>
+		<Authors>Lars Werner</Authors>
+		<Description>Simple IPC across .core and .net.</Description>
+		<Copyright>Copyright © 2020</Copyright>
+		<PackageLicense>https://github.com/large/SimpleCrossFrameworkIPC/blob/master/LICENSE</PackageLicense>
+		<PackageProjectUrl>https://github.com/large/SimpleIPC</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/large/SimpleIPC.git</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageTags>IPC, Core, Net, C#,</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>Ported to .net core. Supports .net 4.7.2+ and .net standard 2.0</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+		<AssemblyVersion>1.1.3.0</AssemblyVersion>
+		<FileVersion>1.1.3.0</FileVersion>
+		<AssemblyName>SimpleCrossFrameworkIPC</AssemblyName>
+		<RootNamespace>SimpleCrossFrameworkIPC</RootNamespace>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageIcon>SimpleIPC.jpg</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageId>SimpleCrossFrameworkIPC.core</PackageId>
+		<Product>SimpleCrossFrameworkIPC.core</Product>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SimpleCrossFrameworkIPC\Client\Client.cs" Link="Client\Client.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Client\ClientPipe.cs" Link="Client\ClientPipe.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Client\ProxyHelper.cs" Link="Client\ProxyHelper.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Common\BasicPipe.cs" Link="Common\BasicPipe.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Common\MemoryStreamExtension.cs" Link="Common\MemoryStreamExtension.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Common\Message.cs" Link="Common\Message.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Common\PipeEventArgs.cs" Link="Common\PipeEventArgs.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Common\Request.cs" Link="Common\Request.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Common\Response.cs" Link="Common\Response.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Server\Server.cs" Link="Server\Server.cs" />
+		<Compile Include="..\SimpleCrossFrameworkIPC\Server\ServerPipe.cs" Link="Server\ServerPipe.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+		<PackageReference Include="System.IO.Pipes" Version="4.3.0" />
+		<PackageReference Include="System.IO.Pipes.AccessControl" Version="4.5.1" />
+		<PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+		<PackageReference Include="Newtonsoft.Json" version="12.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\..\..\Pictures\SimpleIPC.jpg">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+
+</Project>

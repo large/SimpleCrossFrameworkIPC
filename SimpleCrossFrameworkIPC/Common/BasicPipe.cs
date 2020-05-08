@@ -35,7 +35,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     public abstract class BasicPipe
     {

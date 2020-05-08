@@ -6,7 +6,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
     /// ProxyHelper class is a direct copy from KrakenIPC: https://github.com/darksody/KrakenIPC

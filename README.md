@@ -1,10 +1,10 @@
-# SimpleCrossPIPE
+# SimpleCrossFrameworkIPC
 Simple IPC between .net and .core
 
 This is a lightversion of a IPC to be used on either .net or .core and even mixed if you like.
 The "fix" for the conversion is a hack and might not work for later releases.
 
-As for 06.04.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
+As for 05.05.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
 
 Class is based on KrakenIPC: https://github.com/darksody/KrakenIPC and Full Duplex Pipes: https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
 
@@ -23,7 +23,8 @@ Server and Client need to share a common interface.
     }
 ```
 
-Server contains the data in the interface, so it needs to be filled
+Server contains the data in the interface, here presented as static values.
+You can use most common data types; int, string, char, float, double, long etc...
 ```c#
     public class Simple : ISimple
     {
@@ -37,7 +38,7 @@ Note that this pipe only works on localhost
 
 ```c#
     //Then create server
-    var handler = new Server<Simple, ISimple>();
+    var handler = new SimpleCrossFrameworkIPC.Server<Simple, ISimple>();
     handler.Start("Channel");
 
     //Pause for clients
@@ -51,7 +52,7 @@ When a client connects it will refer to the same interface.
 After connection are used to receive data from the server
 
 ```c#
-    var client = new SimpleCrossPIPE.Client<IMySimpleService>();
+    var client = new SimpleCrossFrameworkIPC.Client<IMySimpleService>();
 
     try
     {
@@ -71,4 +72,7 @@ After connection are used to receive data from the server
 Exceptionhandling is needed for the pipeconnection throws a "Connection timout" and other errors.
 
 ## Complexity
-I do now belive it will handle complex classes, so i recommend to KISS!
+I have never used this class for complex classes and support for this is unknown.
+
+## Contribution
+Any contribution is welcome :)

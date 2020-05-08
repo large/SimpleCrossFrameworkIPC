@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\SimpleCrossPIPE.core\SimpleCrossPIPE.core.csproj" />
+    <ProjectReference Include="..\SimpleCrossFrameworkIPC.core\SimpleCrossFrameworkIPC.core.csproj" />
   </ItemGroup>
 
     <ItemGroup>

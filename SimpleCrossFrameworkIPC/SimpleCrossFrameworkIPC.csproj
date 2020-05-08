@@ -7,8 +7,8 @@
     <ProjectGuid>{F5F81AEB-652D-4855-B74D-CF2409108689}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleCrossPIPE</RootNamespace>
-    <AssemblyName>SimpleCrossPIPE</AssemblyName>
+    <RootNamespace>SimpleCrossFrameworkIPC</RootNamespace>
+    <AssemblyName>SimpleCrossFrameworkIPC</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

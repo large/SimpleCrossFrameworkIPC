@@ -24,37 +24,28 @@
 // From: http://stackoverflow.com/questions/34478513/c-sharp-full-duplex-asynchronous-named-pipes-net
 // See Eric Frazer's Q and self answer
 
-using System;
-using System.IO.Pipes;
+using System.IO;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
-    /// ClientPipe is based on the Full Duplex Pipeclass https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// PipeEventArgs are orginal as the Full Duplex code https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
     /// </summary>
-    public class ClientPipe : BasicPipe
+    public class PipeEventArgs
     {
-        protected NamedPipeClientStream clientPipeStream;
+        public byte[] Data { get; protected set; }
+        public int Len { get; protected set; }
+        public string String { get; protected set; }
 
-        public ClientPipe(string serverName, string pipeName, Action<BasicPipe> asyncReaderStart)
+        public PipeEventArgs(string str)
         {
-            this.asyncReaderStart = asyncReaderStart;
-            clientPipeStream = new NamedPipeClientStream(serverName, pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-            pipeStream = clientPipeStream;
+            String = str;
         }
 
-        public void Connect()
+        public PipeEventArgs(byte[] data, int len)
         {
-            Connect(0);
-        }
-
-        public void Connect(int Timeout)
-        {
-            if (Timeout == 0)
-                clientPipeStream.Connect();
-            else
-                clientPipeStream.Connect(Timeout);
-            asyncReaderStart(this);
+            Data = data;
+            Len = len;
         }
     }
 }

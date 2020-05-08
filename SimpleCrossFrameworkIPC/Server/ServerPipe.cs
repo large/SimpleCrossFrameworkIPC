@@ -24,28 +24,42 @@
 // From: http://stackoverflow.com/questions/34478513/c-sharp-full-duplex-asynchronous-named-pipes-net
 // See Eric Frazer's Q and self answer
 
-using System.IO;
 
-namespace SimpleCrossPIPE
+
+using System;
+using System.IO.Pipes;
+
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
-    /// PipeEventArgs are orginal as the Full Duplex code https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
+    /// Serverpipe is based on the Full Duplex Pipe class https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
     /// </summary>
-    public class PipeEventArgs
+    public class ServerPipe : BasicPipe
     {
-        public byte[] Data { get; protected set; }
-        public int Len { get; protected set; }
-        public string String { get; protected set; }
+        public event EventHandler<EventArgs> Connected;
 
-        public PipeEventArgs(string str)
+        protected NamedPipeServerStream serverPipeStream;
+
+        public ServerPipe(string pipeName, Action<BasicPipe> asyncReaderStart)
         {
-            String = str;
+            this.asyncReaderStart = asyncReaderStart;
+
+            serverPipeStream = new NamedPipeServerStream(
+                pipeName,
+                PipeDirection.InOut,
+                NamedPipeServerStream.MaxAllowedServerInstances,
+                PipeTransmissionMode.Message,
+                PipeOptions.Asynchronous);
+
+            pipeStream = serverPipeStream;
+            serverPipeStream.BeginWaitForConnection(new AsyncCallback(PipeConnected), null);
         }
 
-        public PipeEventArgs(byte[] data, int len)
+        protected void PipeConnected(IAsyncResult ar)
         {
-            Data = data;
-            Len = len;
+            serverPipeStream.EndWaitForConnection(ar);
+            Connected?.Invoke(this, new EventArgs());
+            asyncReaderStart(this);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleCrossPIPE
+namespace SimpleCrossFrameworkIPC
 {
     /// <summary>
     /// Byte array as "StringBuilder" works, ref https://stackoverflow.com/questions/4015602/equivalent-of-stringbuilder-for-byte-arrays

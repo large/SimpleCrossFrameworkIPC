@@ -11,7 +11,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            var client = new SimpleCrossPIPE.Client<IMySimpleService>();
+            var client = new SimpleCrossFrameworkIPC.Client<IMySimpleService>();
             client.ClientDisconnected += (sndr, arguments) =>
                 Console.WriteLine("Client disconnected");
 

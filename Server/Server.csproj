@@ -54,9 +54,9 @@
       <Project>{36da9fae-d282-41a7-9ff3-68d55de86e06}</Project>
       <Name>Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SimpleCrossPIPE\SimpleCrossPIPE.csproj">
-      <Project>{f5f81aeb-652d-4855-b74d-cf2409108689}</Project>
-      <Name>SimpleCrossPIPE</Name>
+    <ProjectReference Include="..\SimpleCrossFrameworkIPC\SimpleCrossFrameworkIPC.csproj">
+      <Project>{F5F81AEB-652D-4855-B74D-CF2409108689}</Project>
+      <Name>SimpleCrossFrameworkIPC</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
