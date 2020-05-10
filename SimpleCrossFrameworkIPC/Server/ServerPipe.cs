@@ -57,9 +57,17 @@ namespace SimpleCrossFrameworkIPC
 
         protected void PipeConnected(IAsyncResult ar)
         {
-            serverPipeStream.EndWaitForConnection(ar);
-            Connected?.Invoke(this, new EventArgs());
-            asyncReaderStart(this);
+            try
+            {
+                serverPipeStream.EndWaitForConnection(ar);
+                Connected?.Invoke(this, new EventArgs());
+                asyncReaderStart(this);
+            }
+            catch(Exception ex)
+            {
+
+            }
+
         }
     }
 }

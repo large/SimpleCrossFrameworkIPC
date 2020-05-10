@@ -4,7 +4,7 @@ Simple IPC between .net and .core
 This is a lightversion of a IPC to be used on either .net or .core and even mixed if you like.
 The "fix" for the conversion is a hack and might not work for later releases.
 
-As for 05.05.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
+As for 10.05.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
 
 Class is based on KrakenIPC: https://github.com/darksody/KrakenIPC and Full Duplex Pipes: https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
 
@@ -37,15 +37,22 @@ Now create the server, all it needs is the channelname.
 Note that this pipe only works on localhost
 
 ```c#
-    //Then create server
-    var handler = new SimpleCrossFrameworkIPC.Server<Simple, ISimple>();
-    handler.Start("Channel");
+    try
+    {
+        //Then create server
+        var handler = new SimpleCrossFrameworkIPC.Server<Simple, ISimple>();
+        handler.Start("Channel");
 
-    //Pause for clients
-    Console.ReadLine();
+        //Pause for clients
+        Console.ReadLine();
 
-    //Stop server
-    handler.Stop();
+        //Stop server
+        handler.Stop();
+    }
+    catch(Exception ex) //
+    {
+        Console.WriteLine(ex.ToString());
+    }
 ```
 
 When a client connects it will refer to the same interface.
@@ -73,6 +80,37 @@ Exceptionhandling is needed for the pipeconnection throws a "Connection timout" 
 
 ## Complexity
 I have never used this class for complex classes and support for this is unknown.
+
+
+## Events and public functions
+
+# Server
+Events:
+```c#
+        public event EventHandler<EventArgs> ClientConnected;
+        public event EventHandler<EventArgs> ClientDisconnected;
+```
+Functions:
+```c#
+        void Start(string Pipename)
+        void Stop()
+        public T GetProxy()
+```
+
+# Client
+Events
+```c#
+        public event EventHandler<EventArgs> ClientDisconnected;
+```
+Functions
+```c#
+        void Connect(string Pipename)
+        void Connect(string Pipename, int Timeout)
+        public void Disconnect()
+        public bool IsConnected()
+        void UseProxy(Action<T> callback)
+        public T GetProxy()
+```
 
 ## Contribution
 Any contribution is welcome :)

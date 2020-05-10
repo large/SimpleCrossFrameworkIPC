@@ -12,10 +12,11 @@ namespace Server
     {
         public int Number { get => 111; }
         public string Text { get => "Some string"; }
+        public int Count { get; set; }
             
         public int Function()
         {
-            return Number * 12;
+            return Count * 12;
         }
     }
 
@@ -23,22 +24,44 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            //Create server with spesified class and interface
             var handler = new SimpleCrossFrameworkIPC.Server<MySimpleService, IMySimpleService>();
+            int nCount = 0;
 
             Console.WriteLine("Server starting channel: " + Channel.Name);
             Console.WriteLine("Press enter to quit");
-            handler.Start(Channel.Name);
 
             //Create events
             handler.ClientConnected += (sndr, arguments) =>
+            {
+                //Increase and set count on each connect to give an example on how to set values from server
+                nCount++;
+                handler.GetProxy().Count = nCount;
                 Console.WriteLine("Client connected");
+            };
+
+            //Simple event for disconnected clients
             handler.ClientDisconnected += (sndr, arguments) =>
                 Console.WriteLine("Client disconnected");
 
-            Console.ReadLine();
+            try
+            {
+                //Start server
+                handler.Start(Channel.Name);
 
-            //Stopping
-            handler.Stop();
+                //Wait for user input before exiting application
+                Console.ReadLine();
+
+                //Stopping
+                handler.Stop();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.ToString());
+                Console.ReadLine();
+            }
+
+
         }
     }
 }

@@ -32,6 +32,9 @@ namespace SimpleCrossFrameworkIPC
         //Event if client was disconnected
         public event EventHandler<EventArgs> ClientDisconnected;
 
+        //Variable for connection-station
+        private bool bConnected;
+
         /// <summary>
         /// Proxy uses a callbackfunction that builds with the Response-class received from the server
         /// </summary>
@@ -39,6 +42,7 @@ namespace SimpleCrossFrameworkIPC
         {
             clientPipe = null;
             proxy = ProxyHelper.GetInstance<T>(OnMethodCallback);
+            bConnected = false;
         }
 
         /// <summary>
@@ -66,10 +70,33 @@ namespace SimpleCrossFrameworkIPC
                 OnMessageReceived(sender, args.Data);
             };
 
+            //Disconnect event trigger, sets connected state to false
             clientPipe.Disconnect += (sndr, args) =>
+            {
+                bConnected = false;
                 ClientDisconnected?.Invoke(this, new EventArgs());
+            };
 
             clientPipe.Connect(Timeout);
+            bConnected = true;
+        }
+
+        /// <summary>
+        /// Disconnects from the pipe
+        /// </summary>
+        public void Disconnect()
+        {
+            clientPipe.Close();
+            bConnected = false;
+        }
+
+        /// <summary>
+        /// Returns the state of the connection
+        /// </summary>
+        /// <returns>true = connected, false = disconnected</returns>
+        public bool IsConnected()
+        {
+            return bConnected;
         }
 
         /// <summary>

@@ -19,13 +19,14 @@ namespace SimpleCrossFrameworkIPC
     {
         private List<ServerPipe> serverPipes;
         private T proxysource;
+        private string _Pipename { get; set; }
 
+        //Function to detect .Core
         static readonly bool isNetCore = Type.GetType("System.String, System.Private.CoreLib") != null;
 
+        //Public events
         public event EventHandler<EventArgs> ClientConnected;
         public event EventHandler<EventArgs> ClientDisconnected;
-
-        private string _Pipename { get; set; }
 
         public Server()
         {
@@ -43,7 +44,7 @@ namespace SimpleCrossFrameworkIPC
         /// From PipeClient https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
         /// </summary>
         /// <returns></returns>
-        private ServerPipe CreateServer(string Pipename)
+        private void CreateServer(string Pipename)
         {
             int serverIdx = serverPipes.Count;
             ServerPipe serverPipe = new ServerPipe(Pipename, p => p.StartMessageReaderAsync());
@@ -66,10 +67,10 @@ namespace SimpleCrossFrameworkIPC
             {
                 ClientDisconnected?.Invoke(this, new EventArgs());
                 ServerPipe sender = sndr as ServerPipe;
-                serverPipes.Remove(sender);
+                bool bPipeRemoved = serverPipes.Remove(sender);
+                if (!bPipeRemoved)
+                    throw new Exception("Pipe not found, rare case ");
             };
-
-            return serverPipe;
         }
 
         /// <summary>
@@ -83,6 +84,15 @@ namespace SimpleCrossFrameworkIPC
                 serverPipes[i].Flush();
                 serverPipes[i].Close();
             }
+        }
+
+        /// <summary>
+        /// Get the proxy class so you can make calls to the server
+        /// </summary>
+        /// <returns>Proxy instance that respects the contract</returns>
+        public T GetProxy()
+        {
+            return proxysource;
         }
 
         /// <summary>

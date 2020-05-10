@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 
 namespace ServerClientContract
 {
+    //Interface shared between server and client(s)
     public interface IMySimpleService
     {
         int Number { get;  }
         string Text { get; }
+        int Count { get; set; }
 
         int Function();
     }
 
+    //Simple common class to share name and timeouts
     public class Channel
     {
         public static string Name = "ChannelName";
