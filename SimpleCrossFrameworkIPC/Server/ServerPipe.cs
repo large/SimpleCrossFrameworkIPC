@@ -63,11 +63,9 @@ namespace SimpleCrossFrameworkIPC
                 Connected?.Invoke(this, new EventArgs());
                 asyncReaderStart(this);
             }
-            catch(Exception ex)
+            catch
             {
-
             }
-
         }
     }
 }

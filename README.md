@@ -82,27 +82,27 @@ Exceptionhandling is needed for the pipeconnection throws a "Connection timout" 
 I have never used this class for complex classes and support for this is unknown.
 
 
-## Events and public functions
+# Events and public functions
 
-# Server
-Events:
+## Server
+### Events
 ```c#
         public event EventHandler<EventArgs> ClientConnected;
         public event EventHandler<EventArgs> ClientDisconnected;
 ```
-Functions:
+### Functions
 ```c#
         void Start(string Pipename)
         void Stop()
         public T GetProxy()
 ```
 
-# Client
-Events
+## Client
+### Events
 ```c#
         public event EventHandler<EventArgs> ClientDisconnected;
 ```
-Functions
+### Functions
 ```c#
         void Connect(string Pipename)
         void Connect(string Pipename, int Timeout)
