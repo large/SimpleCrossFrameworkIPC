@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
@@ -65,11 +66,12 @@ namespace SimpleCrossFrameworkIPC
 
             serverPipe.Disconnect += (sndr, args) =>
             {
-                ClientDisconnected?.Invoke(this, new EventArgs());
                 ServerPipe sender = sndr as ServerPipe;
                 bool bPipeRemoved = serverPipes.Remove(sender);
                 if (!bPipeRemoved)
                     throw new Exception("Pipe not found, rare case ");
+                else
+                    ClientDisconnected?.Invoke(this, new EventArgs());
             };
         }
 
@@ -153,7 +155,14 @@ namespace SimpleCrossFrameworkIPC
             var responseMessage = new Message<Response>(response);
             var responseJson = JsonConvert.SerializeObject(responseMessage);
             byte[] responseBytes = Encoding.ASCII.GetBytes(responseJson);
-            serverPipe.WriteBytes(responseBytes, false);
+
+            try
+            {
+                serverPipe.WriteBytes(responseBytes, false);
+            }
+            catch(IOException) //Catch this exception to ensure disconnect
+            {
+            }
         }
     }
 }

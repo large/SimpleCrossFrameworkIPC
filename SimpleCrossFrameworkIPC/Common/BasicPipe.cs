@@ -132,7 +132,7 @@ namespace SimpleCrossFrameworkIPC
                 var blength = BitConverter.GetBytes(bytes.Length);
                 bfull = blength.Concat(bytes).ToArray();
             }
-            
+
             return pipeStream.WriteAsync(bfull, 0, bfull.Length);
         }
 

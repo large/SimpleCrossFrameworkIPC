@@ -4,14 +4,18 @@ Simple IPC between .net and .core
 This is a lightversion of a IPC to be used on either .net or .core and even mixed if you like.
 The "fix" for the conversion is a hack and might not work for later releases.
 
-As for 10.05.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
+As for 20.09.2020 it works as expected between netstandard 2.0 and .net 4.7.2.
 
 Class is based on KrakenIPC: https://github.com/darksody/KrakenIPC and Full Duplex Pipes: https://www.codeproject.com/Articles/1179195/Full-Duplex-Asynchronous-Read-Write-with-Named-Pip
-
 
 ## Pipes are old, why did you mesh this up
 I had a asp.core application that needed to get data from a .net472 application and the only IPC that actually worked was gRPC ( https://grpc.io/ ).
 gRPC was overkill for my project so I wanted something simpler and tiny.
+
+#### Updated 20.09.2020 ####
+Added a custom delay for the time to wait for server data for the client.
+Changed return method to throw an exception instead of null, to make it easier to handle timeouts in the future.
+Also an event is added, to ensure that you catch everything if you decide to suppress exceptions.
 
 ## Usage
 Server and Client need to share a common interface.
@@ -49,7 +53,7 @@ Note that this pipe only works on localhost
         //Stop server
         handler.Stop();
     }
-    catch(Exception ex) //
+    catch(Exception ex)
     {
         Console.WriteLine(ex.ToString());
     }
@@ -58,12 +62,15 @@ Note that this pipe only works on localhost
 When a client connects it will refer to the same interface.
 After connection are used to receive data from the server
 
+
+
 ```c#
-    var client = new SimpleCrossFrameworkIPC.Client<IMySimpleService>();
+    int nWaitForServerDataDelay = 2000; //2 sec max waiting for data
+    var client = new SimpleCrossFrameworkIPC.Client<IMySimpleService>(nWaitForServerDataDelay);
 
     try
     {
-        //Connect with a 1 second timeout
+        //Connect with a 1 second connection timeout
         client.Connect("Channel", 1000);
         var proxy = client.GetProxy();
 
@@ -71,7 +78,7 @@ After connection are used to receive data from the server
         Console.WriteLine("Text: " + proxy.Text);
         Console.WriteLine("Number: " + proxy.Number.ToString());
     }
-    catch(Exception ex) //
+    catch(Exception ex)
     {
         Console.WriteLine(ex.ToString());
     }

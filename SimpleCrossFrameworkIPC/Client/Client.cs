@@ -32,17 +32,33 @@ namespace SimpleCrossFrameworkIPC
         //Event if client was disconnected
         public event EventHandler<EventArgs> ClientDisconnected;
 
+        //Event if client timed out for waiting for data
+        public event EventHandler<EventArgs> ClientDataReceiveTimeout;
+
+        //Timeout variable (in ms) for waiting for data from server. Default 2000 ms (2 secs)
+        public int ClientReceiveTimeout { get; set; }
+
         //Variable for connection-station
         private bool bConnected;
 
         /// <summary>
         /// Proxy uses a callbackfunction that builds with the Response-class received from the server
+        /// Default constructor for 2000 ms wait time for data
         /// </summary>
-        public Client()
+        public Client() : this(2000)
+        {
+        }
+
+        /// <summary>
+        /// Alternative creator for clients
+        /// </summary>
+        /// <param name="_ClientReceiveTimeout"></param>
+        public Client(int _ClientReceiveTimeout)
         {
             clientPipe = null;
             proxy = ProxyHelper.GetInstance<T>(OnMethodCallback);
             bConnected = false;
+            ClientReceiveTimeout = _ClientReceiveTimeout;
         }
 
         /// <summary>
@@ -150,8 +166,8 @@ namespace SimpleCrossFrameworkIPC
             byte[] requestBytes = Encoding.ASCII.GetBytes(json);
             clientPipe.WriteBytes(requestBytes, false);
 
-            //Wait for data to be received, then build the data (2 seconds max)
-            responseEvent.Wait(TimeSpan.FromMilliseconds(2000));
+            //Wait for data to be received, then build the data (user set timeout)
+            responseEvent.Wait(TimeSpan.FromMilliseconds(ClientReceiveTimeout));
             if (responseEvent.IsSet)
             {
                 Message message = JsonConvert.DeserializeObject<Message>(responseJson);
@@ -181,7 +197,10 @@ namespace SimpleCrossFrameworkIPC
 
             }
             else //If event is not set, then return nada
-                return null;
+            {
+                ClientDataReceiveTimeout?.Invoke(this, new EventArgs());
+                throw new Exception("Timeout waiting for data");
+            }
         }
 
         /// <summary>

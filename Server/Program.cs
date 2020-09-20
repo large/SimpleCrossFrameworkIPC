@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Server
@@ -13,7 +14,14 @@ namespace Server
         public int Number { get => 111; }
         public string Text { get => "Some string"; }
         public int Count { get; set; }
-            
+
+        //Simple function to show how to handle the receiveclientTimeout event
+        public bool DelayedFunction()
+        {
+            Thread.Sleep(4000);
+            return true;
+        }
+
         public int Function()
         {
             return Count * 12;
